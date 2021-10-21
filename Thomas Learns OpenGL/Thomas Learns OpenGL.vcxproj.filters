@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GettingStarted">
+      <UniqueIdentifier>{7b0e2a73-c44d-4ad6-852e-b4a3dd07ca53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GettingStarted\CreateAWindow">
+      <UniqueIdentifier>{85da6a5c-2024-45b3-96be-7ab605150ecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GettingStarted\HelloWindow">
+      <UniqueIdentifier>{06796a7f-ca7b-459b-b56c-06e33dd8111e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="Getting Started\Components\Shader.cpp" />
+    <ClCompile Include="Getting Started\HelloWindow.cpp" />
+    <ClCompile Include="Getting Started\Components\Mesh.cpp" />
+    <ClCompile Include="Getting Started\Components\Model.cpp" />
+    <ClCompile Include="Getting Started\Components\Bone.cpp" />
+    <ClCompile Include="Getting Started\Components\Animation.cpp" />
+    <ClCompile Include="Getting Started\Components\Animator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Getting Started\shader.frag">
+      <Filter>GettingStarted\HelloWindow</Filter>
+    </None>
+    <None Include="Getting Started\shader.vert">
+      <Filter>GettingStarted\HelloWindow</Filter>
+    </None>
+    <None Include="Getting Started\lighting.vert" />
+    <None Include="Getting Started\lighting.frag" />
+    <None Include="Getting Started\cube.frag" />
+    <None Include="Getting Started\model.vert" />
+    <None Include="Getting Started\model.frag" />
+    <None Include="Getting Started\Resources\dancing-stormtrooper\silly_dancing.fbx" />
+    <None Include="Getting Started\debug.frag" />
+    <None Include="Getting Started\debug.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Getting Started\Components\Shader.h" />
+    <ClInclude Include="..\stb-master\stb_image.h" />
+    <ClInclude Include="Getting Started\Components\Camera.h" />
+    <ClInclude Include="Getting Started\Components\Mesh.h" />
+    <ClInclude Include="Getting Started\Components\Model.h" />
+    <ClInclude Include="Getting Started\Components\AssimpGLMHelpers.h" />
+    <ClInclude Include="Getting Started\Components\AnimData.h" />
+    <ClInclude Include="Getting Started\Components\Bone.h" />
+    <ClInclude Include="Getting Started\Components\Animation.h" />
+    <ClInclude Include="Getting Started\Components\Animator.h" />
+    <ClInclude Include="Getting Started\Components\FileSystem.h" />
+    <ClInclude Include="Getting Started\Components\root_directory.h" />
+    <ClInclude Include="Getting Started\Components\Quaternion.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Getting Started\cube.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Getting Started\Resources\container2.png" />
+    <Image Include="Getting Started\Resources\container2_specular.png" />
+  </ItemGroup>
+</Project>

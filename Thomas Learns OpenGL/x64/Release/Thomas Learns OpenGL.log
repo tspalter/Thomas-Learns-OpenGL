@@ -1,0 +1,38 @@
+﻿  Animation.cpp
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Mesh.h(90,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.h(33,45): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.cpp(8,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.cpp(9,30): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.cpp(57,20): warning C4018: '<': signed/unsigned mismatch
+  Animator.cpp
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Mesh.h(90,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.h(33,45): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animator.cpp(80,65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animator.cpp(83,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animator.cpp(83,40): warning C4244: 'argument': conversion from '_Ty' to 'GLint', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  Bone.cpp
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Bone.cpp(13,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Bone.cpp(25,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Bone.cpp(36,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  HelloWindow.cpp
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Mesh.h(90,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.h(33,45): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(106,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(190,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(191,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(195,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(196,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(198,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(199,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(207,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Generating code
+  8 of 1307 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Thomas Learns OpenGL.vcxproj -> C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\x64\Release\Thomas Learns OpenGL.exe
