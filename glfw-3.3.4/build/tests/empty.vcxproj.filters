@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\tests\empty.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\deps\tinycthread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\deps\glad_gl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\deps\tinycthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\deps\glad\gl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\tcs11\Documents\Thomas Learns OpenGL\glfw-3.3.4\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{37F15235-7DFB-3BA5-B4C3-8172C64E429B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E287D7BA-BCAB-3FC7-B050-6D8C2D77C6F6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
