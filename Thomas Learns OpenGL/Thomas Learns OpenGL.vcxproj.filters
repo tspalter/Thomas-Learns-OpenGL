@@ -20,6 +20,7 @@
     <ClCompile Include="Getting Started\Components\Bone.cpp" />
     <ClCompile Include="Getting Started\Components\Animation.cpp" />
     <ClCompile Include="Getting Started\Components\Animator.cpp" />
+    <ClCompile Include="Getting Started\Components\Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Getting Started\shader.frag">
@@ -36,6 +37,8 @@
     <None Include="Getting Started\Resources\dancing-stormtrooper\silly_dancing.fbx" />
     <None Include="Getting Started\debug.frag" />
     <None Include="Getting Started\debug.vert" />
+    <None Include="Getting Started\floor.vert" />
+    <None Include="Getting Started\floor.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Getting Started\Components\Shader.h" />
@@ -51,6 +54,7 @@
     <ClInclude Include="Getting Started\Components\FileSystem.h" />
     <ClInclude Include="Getting Started\Components\root_directory.h" />
     <ClInclude Include="Getting Started\Components\Quaternion.h" />
+    <ClInclude Include="Getting Started\Components\Pathfinding.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Getting Started\cube.vert" />

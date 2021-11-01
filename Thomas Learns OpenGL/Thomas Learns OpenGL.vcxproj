@@ -156,6 +156,7 @@
     <ClCompile Include="Getting Started\Components\Bone.cpp" />
     <ClCompile Include="Getting Started\Components\Mesh.cpp" />
     <ClCompile Include="Getting Started\Components\Model.cpp" />
+    <ClCompile Include="Getting Started\Components\Pathfinding.cpp" />
     <ClCompile Include="Getting Started\Components\Shader.cpp" />
     <ClCompile Include="Getting Started\HelloWindow.cpp" />
     <ClCompile Include="glad.c" />
@@ -164,6 +165,8 @@
     <None Include="Getting Started\cube.frag" />
     <None Include="Getting Started\debug.frag" />
     <None Include="Getting Started\debug.vert" />
+    <None Include="Getting Started\floor.frag" />
+    <None Include="Getting Started\floor.vert" />
     <None Include="Getting Started\lighting.frag" />
     <None Include="Getting Started\lighting.vert" />
     <None Include="Getting Started\model.frag" />
@@ -183,6 +186,7 @@
     <ClInclude Include="Getting Started\Components\FileSystem.h" />
     <ClInclude Include="Getting Started\Components\Mesh.h" />
     <ClInclude Include="Getting Started\Components\Model.h" />
+    <ClInclude Include="Getting Started\Components\Pathfinding.h" />
     <ClInclude Include="Getting Started\Components\Quaternion.h" />
     <ClInclude Include="Getting Started\Components\root_directory.h" />
     <ClInclude Include="Getting Started\Components\Shader.h" />

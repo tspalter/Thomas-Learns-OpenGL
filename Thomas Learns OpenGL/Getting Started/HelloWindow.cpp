@@ -11,6 +11,7 @@
 #include "Components/Shader.h"
 #include "Components/Camera.h"
 #include "Components/Animator.h"
+#include "Components/Pathfinding.h"
 
 #include <iostream>
 
@@ -20,12 +21,15 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void processInput(GLFWwindow* window);
 
+// function to draw floor
+void DrawFloor(Shader& shader);
+
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(2.0f, 1.0f, 8.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -37,6 +41,10 @@ float lastFrame = 0.0f;
 // global bools
 bool drawBones = false;
 bool drawMesh = false;
+bool drawPath = true;
+
+// movement speed
+int iValue = 1;
 
 int main()
 {
@@ -86,13 +94,54 @@ int main()
     // -------------------------
     Shader ourShader("Getting Started/model.vert", "Getting Started/model.frag");
     Shader lineShader("Getting Started/model.vert", "Getting Started/debug.frag");
+    Shader floorShader("Getting Started/floor.vert", "Getting Started/floor.frag");
 
     // load models
     Model ourModel("Getting Started/Resources/vampire/dancing_vampire.dae");
     Animation danceAnimation("Getting Started/Resources/vampire/dancing_vampire.dae", &ourModel);
     Animator animator(&danceAnimation);
 
+    std::vector<Point3D> points;
+    Point3D p0, p1, p2, p3, p4, p5, p6, p7;
+    p0.x = 4.0f; p0.y = 0.0f; p0.z = 4.0f;
+    p1.x = 2.4f; p1.y = 0.0f; p1.z = 3.6f;
+    p2.x = -0.4f; p2.y = 0.0f; p2.z = 2.4f;
+    p3.x = -1.0f; p3.y = 0.0f; p3.z = 0.6f;
+    p4.x = -2.0f; p4.y = 0.0f; p4.z = -1.2f;
+    p5.x = -1.6f; p5.y = 0.0f; p5.z = -2.0f;
+    p6.x = 0.6f; p6.y = 0.0f; p6.z = -0.4f;
+    p7.x = 2.8f; p7.y = 0.0f; p7.z = -0.2f;
+    points.push_back(p0);
+    points.push_back(p1);
+    points.push_back(p2);
+    points.push_back(p3);
+    points.push_back(p4);
+    points.push_back(p5);
+    points.push_back(p6);
+    points.push_back(p7);
 
+    std::vector<Point3D> splinePoints;
+    int TOTAL_SPLINE_POINTS = 500;
+    for (int i = 0; i < TOTAL_SPLINE_POINTS; i++) {
+        float t = ((float)i / (float)TOTAL_SPLINE_POINTS) * points.size();
+        Point3D pt = GetSpline(points, t);
+        splinePoints.push_back(pt);
+    }
+    // change points to vector of floats, for drawing purposes
+    std::vector<float> pointCoords = ConvertPointsToFloats(points);
+    std::vector<float> splinePointCoords = ConvertPointsToFloats(splinePoints);
+
+    // arc length table
+    std::vector<float> arcLengthTable = GetArcLengths(splinePoints);
+    float curveLength = arcLengthTable[arcLengthTable.size() - 1];
+
+    // finally, divide points by the curveLength value and create the final values
+    tArcValues tArcPairs = GetFinalPairValues(arcLengthTable, curveLength);
+
+    // iterate through spline points
+    int splineIter = 0;
+    float t = 1.0f / (float)TOTAL_SPLINE_POINTS;
+    
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -112,7 +161,7 @@ int main()
         animator.UpdateAnimation(deltaTime);
 
         // render
-        glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // don't forget to enable shader before setting uniforms
@@ -128,24 +177,49 @@ int main()
         for (int i = 0; i < transforms.size(); i++)
             ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
+        // iterate for the path
+        splineIter = splineIter % TOTAL_SPLINE_POINTS;
+        glm::vec3 currPoint = glm::vec3(splinePoints[splineIter].x, splinePoints[splineIter].y, splinePoints[splineIter].z);
+        splineIter = splineIter + iValue;
+
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+        
+        
+        model = glm::translate(model, currPoint); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.7f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
        
-        glClear(GL_DEPTH_BUFFER_BIT);
+        // reset the model matrix
+        model = glm::mat4(1.0f);
 
+        lineShader.use();
+        lineShader.setMat4("projection", projection);
+        lineShader.setMat4("view", view);
+        lineShader.setMat4("model", model);
+        // draw the floor
+        DrawFloor(lineShader);
+        
+        if (drawPath) {
+            lineShader.setBool("controlColor", true);
+            DrawPath(lineShader, pointCoords);
+            lineShader.setBool("controlColor", false);
+            lineShader.setBool("pathColor", true);
+            DrawSplinePath(lineShader, splinePointCoords);
+            lineShader.setBool("pathColor", false);
+        }
         if (drawBones) {
-            lineShader.use();
-            lineShader.setMat4("projection", projection);
-            lineShader.setMat4("view", view);
+            glClear(GL_DEPTH_BUFFER_BIT);
             for (int i = 0; i < transforms.size(); i++)
                 lineShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+            model = glm::translate(model, currPoint);
+            model = glm::scale(model, glm::vec3(0.7f));
             lineShader.setMat4("model", model);
             animator.DebugDraw();
         }
+
+        
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -207,13 +281,88 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
     camera.ProcessMouseScroll(yoffset);
 }
 
+// glfw: whenever a specific key is pressed, this callback is called
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_B && action == GLFW_PRESS) {
         drawBones = !drawBones;
-        cout << "Toggling bone draw to " << drawBones << endl;
     }
     if (key == GLFW_KEY_M && action == GLFW_PRESS) {
         drawMesh = !drawMesh;
-        cout << "Toggling mesh draw" << endl;
     }
+    if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        drawPath = !drawPath;
+    }
+    if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
+
+    }
+    if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
+
+    }
+}
+
+void DrawFloor(Shader& shader)
+{
+    std::vector<float> floorVerts;
+    std::vector<GLuint> floorInds;
+
+    float floorL = 5.0f;
+    float floorW = 5.0f;
+
+    int linesL = 5;
+    int linesW = 5;
+
+
+    for (float i = 0.0f; i < linesL; i++) {
+
+        floorVerts.push_back(-floorL);
+        floorVerts.push_back(0.0f);
+        floorVerts.push_back(i / (linesL - 1) * (2.f * floorW) - floorW);
+
+        floorVerts.push_back(floorL);
+        floorVerts.push_back(0.0f);
+        floorVerts.push_back(i / (linesL - 1) * (2.f * floorW) - floorW);
+
+        floorInds.push_back(i * 2);
+        floorInds.push_back(i * 2 + 1);
+
+    }
+
+    for (float i = 0.0f; i < linesW; i++) {
+
+        floorVerts.push_back(i / (linesW - 1) * (2.f * floorL) - floorL);
+        floorVerts.push_back(0.0f);
+        floorVerts.push_back(-floorW);
+
+        floorVerts.push_back(i / (linesW - 1) * (2.f * floorL) - floorL);
+        floorVerts.push_back(0.0f);
+        floorVerts.push_back(floorW);
+
+
+        floorInds.push_back(i * 2 + 2 * linesL);
+        floorInds.push_back(i * 2 + 1 + 2 * linesL);
+
+    }
+
+    GLuint floorVAO, floorEBO, floorVBO;
+
+    shader.use();
+    glGenBuffers(1, &floorVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
+    glBufferData(GL_ARRAY_BUFFER, floorVerts.size() * sizeof(float), &floorVerts[0], GL_STATIC_DRAW);
+
+    glGenBuffers(1, &floorEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, floorEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, floorInds.size() * sizeof(GLuint), &floorInds[0], GL_STATIC_DRAW);
+
+    glGenVertexArrays(1, &floorVAO);
+    glBindVertexArray(floorVAO);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, floorEBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glBindVertexArray(0);
+
+    glBindVertexArray(floorVAO);
+    glDrawArrays(GL_LINES, 0, floorVerts.size());
+    glBindVertexArray(0);
 }
