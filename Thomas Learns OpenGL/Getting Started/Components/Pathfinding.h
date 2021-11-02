@@ -21,10 +21,16 @@ Point3D GetSpline(std::vector<Point3D> points, float t);
 std::vector<float> GetArcLengths(std::vector<Point3D> splinePoints);
 
 // get the final point values based on the curve length
-tArcValues GetFinalPairValues(std::vector<float> splinePoints, float curveLength);
+tArcValues GetFinalPairValues(std::vector<Point3D> points, std::vector<float> splinePoints, float curveLength);
 
-// search for a given arc length based on the table
+// binary search for a given arc length based on the table
 float FindArcLength(tArcValues arcValuePairs, int l, int r, float t);
+
+// binary search for the index provided an arc length
+int FindArcIndex(tArcValues arcValuePairs, int l, int r, float arcLength);
+
+// find the given parametric value of a given arc length (u = G^-1(s))
+float FindParametricValue(tArcValues arcValuePairs, float t, float dT);
 
 // distance formula between two vec3
 float GetDistance(glm::vec3 p1, glm::vec3 p2);

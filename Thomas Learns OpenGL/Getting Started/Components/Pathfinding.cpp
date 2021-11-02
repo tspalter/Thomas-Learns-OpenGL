@@ -49,11 +49,11 @@ std::vector<float> GetArcLengths(std::vector<Point3D> splinePoints) {
 	return arcLengthList;
 }
 
-tArcValues GetFinalPairValues(std::vector<float> arcLengths, float curveLength) {
+tArcValues GetFinalPairValues(std::vector<Point3D> points, std::vector<float> arcLengths, float curveLength) {
 	tArcValues tArcPairs;
 	for (int i = 0; i < arcLengths.size(); i++) {
 		std::pair<float, float> tArc;
-		tArc.first = arcLengths[i] / curveLength;
+		tArc.first = (arcLengths[i] / curveLength) * points.size();
 		tArc.second = arcLengths[i];
 		tArcPairs.push_back(tArc);
 	}
@@ -62,7 +62,7 @@ tArcValues GetFinalPairValues(std::vector<float> arcLengths, float curveLength) 
 
 float FindArcLength(tArcValues arcValuePairs, int l, int r, float t) {
 	if (r >= 1) {
-		int mid = l + (r - 1) / 2;
+		int mid = (l + (r - 1)) / 2;
 
 		// at midpoint
 		if (arcValuePairs[mid].first == t) {
@@ -82,6 +82,50 @@ float FindArcLength(tArcValues arcValuePairs, int l, int r, float t) {
 
 	// element is not present
 	return -1.0f;
+}
+
+int FindArcIndex(tArcValues arcValuePairs, int l, int r, float arcLength) {
+	// case if l and r are equal
+	if (l == r) {
+		return l;
+	}
+	if (r >= 1) {
+		
+		int mid = (l + (r - 1)) / 2;
+
+		// midpoint
+		if (arcValuePairs[mid].second == arcLength) {
+			return mid;
+		}
+
+		// less than midpoint
+		if (arcValuePairs[mid].second < arcLength) {
+			return FindArcIndex(arcValuePairs, l, mid - 1, arcLength);
+		}
+
+		// greater than midpoint
+		if (arcValuePairs[mid].second > arcLength) {
+			return FindArcIndex(arcValuePairs, mid + 1, r, arcLength);
+		}
+	}
+
+	// if this point is reached, the closest index was 0
+	return 0;
+}
+
+float FindParametricValue(tArcValues arcValuePairs, float arcLength, float dT) {
+	// first find the index closest to the provided arc length
+	int i = FindArcIndex(arcValuePairs, 0, arcValuePairs.size(), arcLength);
+
+	// next find our given arc length via interpolation
+	float sI = arcValuePairs[i].second;
+	float sIplusOne = arcValuePairs[i + 1].second;
+
+	// finally calculate the parameter value
+	float u = arcValuePairs[i].first + dT * ((arcLength - sI) / (sIplusOne - sI));
+
+	return u;
+
 }
 
 float GetDistance(glm::vec3 p1, glm::vec3 p2) {
@@ -142,8 +186,8 @@ void DrawPath(Shader& shader, std::vector<float> pointCoords) {
 void DrawSplinePath(Shader& shader, std::vector<float> pointCoords) {
 	shader.use();
 	std::vector<int> inds;
-	for (int i = 0; i < 500; i++) {
-		if (i == 499) {
+	for (int i = 0; i < 2000; i++) {
+		if (i == 1999) {
 			inds.push_back(i);
 			inds.push_back(0);
 		}

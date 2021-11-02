@@ -97,8 +97,8 @@ int main()
     Shader floorShader("Getting Started/floor.vert", "Getting Started/floor.frag");
 
     // load models
-    Model ourModel("Getting Started/Resources/vampire/dancing_vampire.dae");
-    Animation danceAnimation("Getting Started/Resources/vampire/dancing_vampire.dae", &ourModel);
+    Model ourModel("Getting Started/Resources/cowboy/model.dae");
+    Animation danceAnimation("Getting Started/Resources/cowboy/model.dae", &ourModel);
     Animator animator(&danceAnimation);
 
     std::vector<Point3D> points;
@@ -121,7 +121,7 @@ int main()
     points.push_back(p7);
 
     std::vector<Point3D> splinePoints;
-    int TOTAL_SPLINE_POINTS = 500;
+    int TOTAL_SPLINE_POINTS = 2000;
     for (int i = 0; i < TOTAL_SPLINE_POINTS; i++) {
         float t = ((float)i / (float)TOTAL_SPLINE_POINTS) * points.size();
         Point3D pt = GetSpline(points, t);
@@ -136,12 +136,19 @@ int main()
     float curveLength = arcLengthTable[arcLengthTable.size() - 1];
 
     // finally, divide points by the curveLength value and create the final values
-    tArcValues tArcPairs = GetFinalPairValues(arcLengthTable, curveLength);
+    tArcValues tArcPairs = GetFinalPairValues(points, arcLengthTable, curveLength);
+
+    std::cout << tArcPairs[1999].first << std::endl;
 
     // iterate through spline points
     int splineIter = 0;
     float t = 1.0f / (float)TOTAL_SPLINE_POINTS;
-    
+
+    // int i = FindArcIndex(tArcPairs, 0, tArcPairs.size(), 1.0f);
+    // float u = FindParametricValue(tArcPairs, arcLengthTable[i], t);
+
+    // std::cout << u << std::endl;
+
     // render loop
     while (!glfwWindowShouldClose(window))
     {
@@ -158,7 +165,7 @@ int main()
 
         // input
         processInput(window);
-        animator.UpdateAnimation(deltaTime);
+        animator.UpdateAnimation(deltaTime * iValue);
 
         // render
         glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
@@ -187,7 +194,7 @@ int main()
         
         
         model = glm::translate(model, currPoint); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.7f));	// it's a bit too big for our scene, so scale it down
+        model = glm::scale(model, glm::vec3(0.1f));	// it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
        
@@ -214,7 +221,7 @@ int main()
             for (int i = 0; i < transforms.size(); i++)
                 lineShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
             model = glm::translate(model, currPoint);
-            model = glm::scale(model, glm::vec3(0.7f));
+            model = glm::scale(model, glm::vec3(0.1f));
             lineShader.setMat4("model", model);
             animator.DebugDraw();
         }
@@ -293,10 +300,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         drawPath = !drawPath;
     }
     if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-
+        iValue++;
     }
     if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-
+        iValue--;
+        if (iValue < 1) {
+            iValue = 1;
+        }
     }
 }
 
