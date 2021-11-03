@@ -50,6 +50,9 @@ bool drawPath = true;
 // movement speed
 int iValue = 1;
 
+// math constant
+float PI = glm::pi<float>();
+
 int main()
 {
     // glfw: initialize and configure
@@ -204,10 +207,9 @@ int main()
         }
         animator.UpdateAnimation(deltaTime * (iValue * 0.7f) * arcSpeed);
 
-
         splineIter = splineIter + iValue;
         if (splineIter >= TOTAL_SPLINE_POINTS) {
-            this_thread::sleep_until(system_clock::now() + 1s);
+            this_thread::sleep_until(system_clock::now() + 0.5s);
         }
 
         // render
@@ -233,11 +235,25 @@ int main()
         glm::vec2 curr = glm::vec2(currPoint.x, currPoint.z);
         glm::vec2 fwd = glm::vec2(fwdPt.x, fwdPt.z);
 
-        float angle = FindArcLength(tArcPairs, t + dT) - FindArcLength(tArcPairs, t);
+
+        float angle = atan2f(fwd.y - curr.y, fwd.x - curr.x);
+        /*if (splineIter >= TOTAL_SPLINE_POINTS - 1) {
+            angle = tArcPairs[0].second - tArcPairs[splineIter].second;
+        }
+        else {
+            angle = tArcPairs[splineIter + 1].second - tArcPairs[splineIter].second;
+        }
+
+        glm::vec3 U = glm::vec3(0.0f, 1.0f, 0.0f) * angle;
+
+        glm::vec3 V = U * angle;*/
+
+
         
         model = glm::translate(model, currPoint); // translate it down so it's at the center of the scene
+        model = glm::rotate(model, float(-angle + PI / 2), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.1f));	// it's a bit too big for our scene, so scale it down
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+        
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
        
@@ -264,8 +280,9 @@ int main()
             for (int i = 0; i < transforms.size(); i++)
                 lineShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
             model = glm::translate(model, currPoint);
+            model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
             model = glm::scale(model, glm::vec3(0.1f));
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
+            
             lineShader.setMat4("model", model);
             animator.DebugDraw();
         }

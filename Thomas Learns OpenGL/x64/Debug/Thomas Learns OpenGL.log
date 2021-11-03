@@ -1,34 +1,34 @@
 ﻿  HelloWindow.cpp
 C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Mesh.h(90,1): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\Components\Animation.h(33,45): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(152,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(167,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(315,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(316,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(320,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(321,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(323,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(324,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(332,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(379,31): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(155,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(170,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(332,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(333,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(337,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(338,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(340,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(341,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(349,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(396,31): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
           with
           [
               _Ty=unsigned int
           ]
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(380,35): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(397,35): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
           with
           [
               _Ty=unsigned int
           ]
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(395,35): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(412,35): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
           with
           [
               _Ty=unsigned int
           ]
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(396,39): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(413,39): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
           with
           [
               _Ty=unsigned int
           ]
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(420,48): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\Getting Started\HelloWindow.cpp(437,48): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Thomas Learns OpenGL.vcxproj -> C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\x64\Debug\Thomas Learns OpenGL.exe
