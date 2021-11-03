@@ -1,4 +1,4 @@
-CS560 - Project 1
+CS560 - Project 2
 
 Controls:
 
@@ -10,18 +10,21 @@ A = left
 D = right
 B = toggle bone debug drawing
 M = toggle mesh polygon line debug drawing
+P = toggle path debug drawing
+Left Arrow = Increase speed of the model
+Right Arrow = Decrease speed of the model (default set to slowest speed)
 
 Esc = Close the window
 
-Interpolation algorithm is handled through the CalculateBoneTransform function in the Animator class using functions in the Bone class.  CalculateBoneTransform
-recursively finds individual bones based on the ASSIMP node being checked, then calls the Bone's Update function before collecting its transformation matrix
-as the node's transform.  In the Bone Update function, indiviual functions are called to interpolate the position, rotation, and scaling separately before
-combining all matrices into one transformation matrix.  Note that the InterpolateRotation function calls the Slerp function from the Quaternion class, while the other
-two interpolation functions simply use lerp functions; all three receive their scale factor from the same function (also in the Bone class).
+For this implementation, I ended up using the approximation by forward
+differencing.  I found that while there are several issues with the way the
+approximation works, it provided a satisfying pathfinding algorithm.  To 
+implement this, I created a separate file for all Pathfinding equations.
+Included are a binary search that finds the index of a section of the arc, 
+a calculation to properly determine the location of spline points based on the
+provided control points, and a calculation of the arc lengths for each given
+section of the path based on those spline points.  In the main method, I was
+able to iterate through different speeds and easing on the animations based 
+on the location on the path (the character animation is slower where arc lengths
+are shorter and faster on longer stretches).
 
-Interesting bug to mention:  While it doesn't harm the rest of the program, when turning the debug bone drawing on, you notice that there is a point that
-isn't attached to the model with a "moving" bone.  ASSIMP's node data collects the origin of the scene (0, 0, 0) as the first node regardless and 
-therefore creates this point, trying to get the program to collect/draw all other nodes besides this first one yielded messier results while still drawing
-the origin point.
-
-Animation file used is a COLLADA (.dae) file.
