@@ -60,27 +60,13 @@ tArcValues GetFinalPairValues(std::vector<Point3D> points, std::vector<float> ar
 	return tArcPairs;
 }
 
-float FindArcLength(tArcValues arcValuePairs, int l, int r, float t) {
-	if (r >= 1) {
-		int mid = (l + (r - 1)) / 2;
-
-		// at midpoint
-		if (arcValuePairs[mid].first == t) {
-			return arcValuePairs[mid].second;
-		}
-
-		// if element is smaller than mid t
-		if (arcValuePairs[mid].first < t) {
-			return FindArcLength(arcValuePairs, l, mid - 1, t);
-		}
-
-		// element is larger than mid t
-		if (arcValuePairs[mid].first > t) {
-			return FindArcLength(arcValuePairs, mid + 1, r, t);
+float FindArcLength(tArcValues arcValuePairs, float t) {
+	for (int i = 0; i < arcValuePairs.size(); i++) {
+		if (arcValuePairs[i].first == t) {
+			return arcValuePairs[i].second;
 		}
 	}
 
-	// element is not present
 	return -1.0f;
 }
 
@@ -100,17 +86,27 @@ int FindArcIndex(tArcValues arcValuePairs, int l, int r, float arcLength) {
 
 		// less than midpoint
 		if (arcValuePairs[mid].second < arcLength) {
-			return FindArcIndex(arcValuePairs, l, mid - 1, arcLength);
+			return FindArcIndex(arcValuePairs, mid + 1, r, arcLength);
 		}
 
 		// greater than midpoint
 		if (arcValuePairs[mid].second > arcLength) {
-			return FindArcIndex(arcValuePairs, mid + 1, r, arcLength);
+			return FindArcIndex(arcValuePairs, l, mid, arcLength);
 		}
 	}
 
 	// if this point is reached, the closest index was 0
 	return 0;
+}
+
+std::pair<Point3D, float> GetPointsFromPairValues(tArcValues arcValuePairs, std::vector<Point3D> splinePoints, int i) {
+	std::pair<Point3D, float> listOfValues;
+	
+	// since the spline points vector helps create the tArcValues, they will be of equal size
+	listOfValues.first = splinePoints[i];
+	listOfValues.second = arcValuePairs[i].second;
+
+	return listOfValues;
 }
 
 float FindParametricValue(tArcValues arcValuePairs, float arcLength, float dT) {
@@ -141,6 +137,17 @@ std::vector<float> ConvertPointsToFloats(std::vector<Point3D> points) {
 	}
 
 	return pointCoords;
+}
+
+Point3D FindPoint(tArcValues arcValuePairs, std::vector<Point3D> splinePoints, float arcLength) {
+	Point3D point{ 0.0f, 0.0f, 0.0f };
+	for (int i = 0; i < arcValuePairs.size(); i++) {
+		std::pair<Point3D, float> pair = GetPointsFromPairValues(arcValuePairs, splinePoints, i);
+		if (pair.second == arcLength) {
+			point = pair.first;
+		}
+	}
+	return point;
 }
 
 void DrawPath(Shader& shader, std::vector<float> pointCoords) {

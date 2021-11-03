@@ -14,6 +14,10 @@
 #include "Components/Pathfinding.h"
 
 #include <iostream>
+#include <chrono>
+#include <thread>
+
+using std::chrono::system_clock;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -103,7 +107,7 @@ int main()
 
     std::vector<Point3D> points;
     Point3D p0, p1, p2, p3, p4, p5, p6, p7;
-    p0.x = 4.0f; p0.y = 0.0f; p0.z = 4.0f;
+    p0.x = 4.0f; p0.y = 0.0f; p0.z = 3.0f;
     p1.x = 2.4f; p1.y = 0.0f; p1.z = 3.6f;
     p2.x = -0.4f; p2.y = 0.0f; p2.z = 2.4f;
     p3.x = -1.0f; p3.y = 0.0f; p3.z = 0.6f;
@@ -138,16 +142,17 @@ int main()
     // finally, divide points by the curveLength value and create the final values
     tArcValues tArcPairs = GetFinalPairValues(points, arcLengthTable, curveLength);
 
-    std::cout << tArcPairs[1999].first << std::endl;
+    std::cout << curveLength << std::endl;
 
     // iterate through spline points
     int splineIter = 0;
-    float t = 1.0f / (float)TOTAL_SPLINE_POINTS;
+    float dT = 1.0f / (float)TOTAL_SPLINE_POINTS;
+    
+    // find an arc index based off of the arc length
+    int i = FindArcIndex(tArcPairs, 0, tArcPairs.size(), 6.2f);
 
-    // int i = FindArcIndex(tArcPairs, 0, tArcPairs.size(), 1.0f);
-    // float u = FindParametricValue(tArcPairs, arcLengthTable[i], t);
-
-    // std::cout << u << std::endl;
+    // from a given arc length at an index, find the u-value [0, 1]
+    float u = FindParametricValue(tArcPairs, arcLengthTable[i], dT);
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -165,7 +170,45 @@ int main()
 
         // input
         processInput(window);
-        animator.UpdateAnimation(deltaTime * iValue);
+
+        // iterate for the path
+        splineIter = splineIter % TOTAL_SPLINE_POINTS;
+        glm::vec3 currPoint = glm::vec3(splinePoints[splineIter].x, splinePoints[splineIter].y, splinePoints[splineIter].z);
+
+        // forward point for rotation
+        float t = tArcPairs[splineIter].first;
+        Point3D forward;
+        if (splineIter < TOTAL_SPLINE_POINTS - 1) {
+            forward = splinePoints[splineIter + 1];
+        }
+        else {
+            forward = splinePoints[0];
+        }
+        glm::vec3 fwdPt = glm::vec3(forward.x, forward.y, forward.z);
+
+        // update the animation based on the arc length differential
+        int prev = splineIter - 1;
+        if (splineIter == 0) {
+            prev = TOTAL_SPLINE_POINTS - 1;
+        }
+        // use the arc speed 
+        float arcSpeed = (tArcPairs[splineIter].second - tArcPairs[prev].second) / (dT * 4);
+        if (splineIter == 0) {
+            arcSpeed = arcSpeed * 0.0f;
+        }
+        if (splineIter < 100) {
+            arcSpeed = arcSpeed * 0.01f * splineIter;
+        }
+        if (splineIter > TOTAL_SPLINE_POINTS - 100) {
+            arcSpeed = arcSpeed * 0.01f * (TOTAL_SPLINE_POINTS - splineIter);
+        }
+        animator.UpdateAnimation(deltaTime * (iValue * 0.7f) * arcSpeed);
+
+
+        splineIter = splineIter + iValue;
+        if (splineIter >= TOTAL_SPLINE_POINTS) {
+            this_thread::sleep_until(system_clock::now() + 1s);
+        }
 
         // render
         glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
@@ -184,17 +227,17 @@ int main()
         for (int i = 0; i < transforms.size(); i++)
             ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
-        // iterate for the path
-        splineIter = splineIter % TOTAL_SPLINE_POINTS;
-        glm::vec3 currPoint = glm::vec3(splinePoints[splineIter].x, splinePoints[splineIter].y, splinePoints[splineIter].z);
-        splineIter = splineIter + iValue;
-
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
-        
+
+        glm::vec2 curr = glm::vec2(currPoint.x, currPoint.z);
+        glm::vec2 fwd = glm::vec2(fwdPt.x, fwdPt.z);
+
+        float angle = FindArcLength(tArcPairs, t + dT) - FindArcLength(tArcPairs, t);
         
         model = glm::translate(model, currPoint); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(0.1f));	// it's a bit too big for our scene, so scale it down
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
        
@@ -222,6 +265,7 @@ int main()
                 lineShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
             model = glm::translate(model, currPoint);
             model = glm::scale(model, glm::vec3(0.1f));
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
             lineShader.setMat4("model", model);
             animator.DebugDraw();
         }
