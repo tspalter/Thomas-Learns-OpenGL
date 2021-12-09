@@ -25,7 +25,7 @@ public:
 
 	void Init();
 	void Update(float dT);
-	void ForwardKinematics(float angleYellowX, float angleYellowY, float angleYellowZ,
+	void InverseKinematics(float angleYellowX, float angleYellowY, float angleYellowZ,
 		float anglePurpleX, float anglePurpleY, float anglePurpleZ,
 		float angleBlueX, float angleBlueY, float angleBlueZ);
 	void RotatePurple(float angleX, float angleY, float angleZ);
@@ -37,8 +37,9 @@ public:
 	Eigen::MatrixXf anglesVector = Eigen::MatrixXf::Zero(9, 1); // for degrees of freedom
 	Eigen::MatrixXf goalVector = Eigen::MatrixXf::Zero(3, 1); // for the joints
 	bool didBoneMove;
-	float preDist = 100;
+	float prevDist = 100;
 
+	// get the Jacobian matrix's transpose
 	Eigen::MatrixXf GetTranspose(int id);
 
 	void Reset();
@@ -87,7 +88,7 @@ public:
 	glm::vec3 blueRot;
 
 	// angle vector vars
-	glm::vec3 lastTargetPosition, targetPosition, v1, v2, v3, v4, v5, v6, v7, v8, v9, anglesVectorX, anglesVectorY, anglesVectorZ;
+	glm::vec3 lastTargetPosition, goal, v1, v2, v3, v4, v5, v6, v7, v8, v9, anglesVectorX, anglesVectorY, anglesVectorZ;
 
 	// alpha values
 	float alphaYellow, alphaPurple, alphaBlue;
