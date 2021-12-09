@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ANIMATOR_H
+#define ANIMATOR_H
 
 #include <glm/glm/glm.hpp>
 #include <map>
@@ -36,3 +37,5 @@ class Animator {
 		float m_CurrentTime;
 		float m_DeltaTime;
 };
+
+#endif

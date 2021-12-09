@@ -25,10 +25,10 @@ class Quaternion {
 		}
 
 		// unnecessary for runtime, mainly used for debugging purposes
-		Quaternion(glm::quat q) {
+		/*Quaternion(glm::quat q) {
 			S = q.w;
 			V = glm::vec3(q.x, q.y, q.z);
-		}
+		}*/
 
 		// returns the magnitude of a quaternion
 		float GetMagnitude() {

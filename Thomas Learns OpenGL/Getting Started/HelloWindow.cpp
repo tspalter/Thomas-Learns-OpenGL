@@ -7,17 +7,17 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>
 
+#include <stdlib.h>
+#include <Windows.h>
+
 #include "Components/FileSystem.h"
-#include "Components/Shader.h"
 #include "Components/Camera.h"
-#include "Components/Animator.h"
-#include "Components/Pathfinding.h"
+
+// IMGUI
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #include <iostream>
-#include <chrono>
-#include <thread>
-
-using std::chrono::system_clock;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -25,18 +25,16 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void processInput(GLFWwindow* window);
 
-// function to draw floor
-void DrawFloor(Shader& shader);
-
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(2.0f, 1.0f, 8.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+bool mousePressed = false;
 
 // timing
 float deltaTime = 0.0f;
@@ -45,7 +43,10 @@ float lastFrame = 0.0f;
 // global bools
 bool drawBones = false;
 bool drawMesh = false;
-bool drawPath = true;
+bool drawPath = false;
+bool drawSegments = true;
+bool drawModel = false;
+bool drawFloor = true;
 
 // movement speed
 int iValue = 1;
@@ -79,9 +80,6 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -93,79 +91,39 @@ int main()
     // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
     stbi_set_flip_vertically_on_load(true);
 
+    // init IMGUI
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    // Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init();
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // build and compile shaders
-    // -------------------------
-    Shader ourShader("Getting Started/model.vert", "Getting Started/model.frag");
-    Shader lineShader("Getting Started/model.vert", "Getting Started/debug.frag");
-    Shader floorShader("Getting Started/floor.vert", "Getting Started/floor.frag");
-
-    // load models
-    Model ourModel("Getting Started/Resources/cowboy/model.dae");
-    Animation danceAnimation("Getting Started/Resources/cowboy/model.dae", &ourModel);
-    Animator animator(&danceAnimation);
-
-    std::vector<Point3D> points;
-    Point3D p0, p1, p2, p3, p4, p5, p6, p7;
-    p0.x = 4.0f; p0.y = 0.0f; p0.z = 3.0f;
-    p1.x = 2.4f; p1.y = 0.0f; p1.z = 3.6f;
-    p2.x = -0.4f; p2.y = 0.0f; p2.z = 2.4f;
-    p3.x = -1.0f; p3.y = 0.0f; p3.z = 0.6f;
-    p4.x = -2.0f; p4.y = 0.0f; p4.z = -1.2f;
-    p5.x = -1.6f; p5.y = 0.0f; p5.z = -2.0f;
-    p6.x = 0.6f; p6.y = 0.0f; p6.z = -0.4f;
-    p7.x = 2.8f; p7.y = 0.0f; p7.z = -0.2f;
-    points.push_back(p0);
-    points.push_back(p1);
-    points.push_back(p2);
-    points.push_back(p3);
-    points.push_back(p4);
-    points.push_back(p5);
-    points.push_back(p6);
-    points.push_back(p7);
-
-    std::vector<Point3D> splinePoints;
-    int TOTAL_SPLINE_POINTS = 2000;
-    for (int i = 0; i < TOTAL_SPLINE_POINTS; i++) {
-        float t = ((float)i / (float)TOTAL_SPLINE_POINTS) * points.size();
-        Point3D pt = GetSpline(points, t);
-        splinePoints.push_back(pt);
-    }
-    // change points to vector of floats, for drawing purposes
-    std::vector<float> pointCoords = ConvertPointsToFloats(points);
-    std::vector<float> splinePointCoords = ConvertPointsToFloats(splinePoints);
-
-    // arc length table
-    std::vector<float> arcLengthTable = GetArcLengths(splinePoints);
-    float curveLength = arcLengthTable[arcLengthTable.size() - 1];
-
-    // finally, divide points by the curveLength value and create the final values
-    tArcValues tArcPairs = GetFinalPairValues(points, arcLengthTable, curveLength);
-
-    std::cout << curveLength << std::endl;
-
-    // iterate through spline points
-    int splineIter = 0;
-    float dT = 1.0f / (float)TOTAL_SPLINE_POINTS;
-    
-    // find an arc index based off of the arc length
-    int i = FindArcIndex(tArcPairs, 0, tArcPairs.size(), 6.2f);
-
-    // from a given arc length at an index, find the u-value [0, 1]
-    float u = FindParametricValue(tArcPairs, arcLengthTable[i], dT);
-
     // render loop
     while (!glfwWindowShouldClose(window))
     {
+        // render
+        glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+        if (mousePressed) {
+            
+        }
+        else {
+            
+        }
         if (drawMesh) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
         else {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
+
         // per-frame time logic
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -174,126 +132,30 @@ int main()
         // input
         processInput(window);
 
-        // iterate for the path
-        splineIter = splineIter % TOTAL_SPLINE_POINTS;
-        glm::vec3 currPoint = glm::vec3(splinePoints[splineIter].x, splinePoints[splineIter].y, splinePoints[splineIter].z);
+        //// feed inputs to dear imgui, start new frame
+        //ImGui_ImplOpenGL3_NewFrame();
+        //ImGui_ImplGlfw_NewFrame();
+        //ImGui::NewFrame();
 
-        // forward point for rotation
-        float t = tArcPairs[splineIter].first;
-        Point3D forward;
-        if (splineIter < TOTAL_SPLINE_POINTS - 1) {
-            forward = splinePoints[splineIter + 1];
-        }
-        else {
-            forward = splinePoints[0];
-        }
-        glm::vec3 fwdPt = glm::vec3(forward.x, forward.y, forward.z);
+        //// render your GUI
+        //ImGui::Begin("Rotational Status");
+        //ImGui::Text("Link:");
+        //ImGui::End();
 
-        // update the animation based on the arc length differential
-        int prev = splineIter - 1;
-        if (splineIter == 0) {
-            prev = TOTAL_SPLINE_POINTS - 1;
-        }
-        // use the arc speed 
-        float arcSpeed = (tArcPairs[splineIter].second - tArcPairs[prev].second) / (dT * 4);
-        if (splineIter == 0) {
-            arcSpeed = arcSpeed * 0.0f;
-        }
-        if (splineIter < 100) {
-            arcSpeed = arcSpeed * 0.01f * splineIter;
-        }
-        if (splineIter > TOTAL_SPLINE_POINTS - 100) {
-            arcSpeed = arcSpeed * 0.01f * (TOTAL_SPLINE_POINTS - splineIter);
-        }
-        animator.UpdateAnimation(deltaTime * (iValue * 0.7f) * arcSpeed);
-
-        splineIter = splineIter + iValue;
-        if (splineIter >= TOTAL_SPLINE_POINTS) {
-            this_thread::sleep_until(system_clock::now() + 0.5s);
-        }
-
-        // render
-        glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // don't forget to enable shader before setting uniforms
-        ourShader.use();
-
-        // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        ourShader.setMat4("projection", projection);
-        ourShader.setMat4("view", view);
-
-        auto transforms = animator.GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); i++)
-            ourShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-
-        // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
-
-        glm::vec2 curr = glm::vec2(currPoint.x, currPoint.z);
-        glm::vec2 fwd = glm::vec2(fwdPt.x, fwdPt.z);
-
-
-        float angle = atan2f(fwd.y - curr.y, fwd.x - curr.x);
-        /*if (splineIter >= TOTAL_SPLINE_POINTS - 1) {
-            angle = tArcPairs[0].second - tArcPairs[splineIter].second;
-        }
-        else {
-            angle = tArcPairs[splineIter + 1].second - tArcPairs[splineIter].second;
-        }
-
-        glm::vec3 U = glm::vec3(0.0f, 1.0f, 0.0f) * angle;
-
-        glm::vec3 V = U * angle;*/
-
-
+        //// Render dear imgui into screen
+        //ImGui::Render();
+        //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
-        model = glm::translate(model, currPoint); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, float(-angle + PI / 2), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.1f));	// it's a bit too big for our scene, so scale it down
         
-        ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
-       
-        // reset the model matrix
-        model = glm::mat4(1.0f);
-
-        lineShader.use();
-        lineShader.setMat4("projection", projection);
-        lineShader.setMat4("view", view);
-        lineShader.setMat4("model", model);
-        // draw the floor
-        DrawFloor(lineShader);
-        
-        if (drawPath) {
-            lineShader.setBool("controlColor", true);
-            DrawPath(lineShader, pointCoords);
-            lineShader.setBool("controlColor", false);
-            lineShader.setBool("pathColor", true);
-            DrawSplinePath(lineShader, splinePointCoords);
-            lineShader.setBool("pathColor", false);
-        }
-        if (drawBones) {
-            glClear(GL_DEPTH_BUFFER_BIT);
-            for (int i = 0; i < transforms.size(); i++)
-                lineShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-            model = glm::translate(model, currPoint);
-            model = glm::rotate(model, angle, glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::scale(model, glm::vec3(0.1f));
-            
-            lineShader.setMat4("model", model);
-            animator.DebugDraw();
-        }
-
-        
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     glfwTerminate();
@@ -314,6 +176,16 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.ProcessKeyboard(UP, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.ProcessKeyboard(DOWN, deltaTime);
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        mousePressed = true;
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+        mousePressed = false;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -327,26 +199,28 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // glfw: whenever the mouse moves, this callback is called
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    if (firstMouse)
-    {
+    if (mousePressed) {
+        if (firstMouse)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            firstMouse = false;
+        }
+
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
         lastX = xpos;
         lastY = ypos;
-        firstMouse = false;
+
+        camera.ProcessMouseMovement(xoffset, yoffset);
     }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    // camera.ProcessMouseScroll(yoffset);
 }
 
 // glfw: whenever a specific key is pressed, this callback is called
@@ -360,6 +234,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
         drawPath = !drawPath;
     }
+    if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+        drawSegments = !drawSegments;
+    }
+    if (key == GLFW_KEY_COMMA && action == GLFW_PRESS) {
+        drawModel = !drawModel;
+    }
+    if (key == GLFW_KEY_F && action == GLFW_PRESS) {
+        drawFloor = !drawFloor;
+    }
     if (key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
         iValue++;
     }
@@ -369,71 +252,4 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             iValue = 1;
         }
     }
-}
-
-void DrawFloor(Shader& shader)
-{
-    std::vector<float> floorVerts;
-    std::vector<GLuint> floorInds;
-
-    float floorL = 5.0f;
-    float floorW = 5.0f;
-
-    int linesL = 5;
-    int linesW = 5;
-
-
-    for (float i = 0.0f; i < linesL; i++) {
-
-        floorVerts.push_back(-floorL);
-        floorVerts.push_back(0.0f);
-        floorVerts.push_back(i / (linesL - 1) * (2.f * floorW) - floorW);
-
-        floorVerts.push_back(floorL);
-        floorVerts.push_back(0.0f);
-        floorVerts.push_back(i / (linesL - 1) * (2.f * floorW) - floorW);
-
-        floorInds.push_back(i * 2);
-        floorInds.push_back(i * 2 + 1);
-
-    }
-
-    for (float i = 0.0f; i < linesW; i++) {
-
-        floorVerts.push_back(i / (linesW - 1) * (2.f * floorL) - floorL);
-        floorVerts.push_back(0.0f);
-        floorVerts.push_back(-floorW);
-
-        floorVerts.push_back(i / (linesW - 1) * (2.f * floorL) - floorL);
-        floorVerts.push_back(0.0f);
-        floorVerts.push_back(floorW);
-
-
-        floorInds.push_back(i * 2 + 2 * linesL);
-        floorInds.push_back(i * 2 + 1 + 2 * linesL);
-
-    }
-
-    GLuint floorVAO, floorEBO, floorVBO;
-
-    shader.use();
-    glGenBuffers(1, &floorVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
-    glBufferData(GL_ARRAY_BUFFER, floorVerts.size() * sizeof(float), &floorVerts[0], GL_STATIC_DRAW);
-
-    glGenBuffers(1, &floorEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, floorEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, floorInds.size() * sizeof(GLuint), &floorInds[0], GL_STATIC_DRAW);
-
-    glGenVertexArrays(1, &floorVAO);
-    glBindVertexArray(floorVAO);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, floorVBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, floorEBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-    glBindVertexArray(0);
-
-    glBindVertexArray(floorVAO);
-    glDrawArrays(GL_LINES, 0, floorVerts.size());
-    glBindVertexArray(0);
 }

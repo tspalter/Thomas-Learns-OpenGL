@@ -1,2 +1,1 @@
 C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\x64\Debug\Thomas Learns OpenGL.exe
-C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\x64\Debug\Thomas Learns OpenGL.pdb

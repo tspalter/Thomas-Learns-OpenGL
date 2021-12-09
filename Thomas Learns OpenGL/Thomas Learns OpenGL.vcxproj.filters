@@ -21,6 +21,16 @@
     <ClCompile Include="Getting Started\Components\Animation.cpp" />
     <ClCompile Include="Getting Started\Components\Animator.cpp" />
     <ClCompile Include="Getting Started\Components\Pathfinding.cpp" />
+    <ClCompile Include="Getting Started\Components\MathFuncs.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Getting Started\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Getting Started\Components\Light.cpp" />
+    <ClCompile Include="Getting Started\Components\Object.cpp" />
+    <ClCompile Include="Getting Started\Components\IKBoneAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Getting Started\shader.frag">
@@ -55,6 +65,18 @@
     <ClInclude Include="Getting Started\Components\root_directory.h" />
     <ClInclude Include="Getting Started\Components\Quaternion.h" />
     <ClInclude Include="Getting Started\Components\Pathfinding.h" />
+    <ClInclude Include="Getting Started\Components\MathFuncs.h" />
+    <ClInclude Include="Getting Started\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Getting Started\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Getting Started\imgui\imconfig.h" />
+    <ClInclude Include="Getting Started\imgui\imgui.h" />
+    <ClInclude Include="Getting Started\imgui\imgui_internal.h" />
+    <ClInclude Include="Getting Started\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Getting Started\imgui\imstb_textedit.h" />
+    <ClInclude Include="Getting Started\imgui\imstb_truetype.h" />
+    <ClInclude Include="Getting Started\Components\Light.h" />
+    <ClInclude Include="Getting Started\Components\Object.h" />
+    <ClInclude Include="Getting Started\Components\IKBoneAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Getting Started\cube.vert" />
@@ -62,5 +84,9 @@
   <ItemGroup>
     <Image Include="Getting Started\Resources\container2.png" />
     <Image Include="Getting Started\Resources\container2_specular.png" />
+    <Image Include="Getting Started\Resources\Head.bmp" />
+    <Image Include="Getting Started\Resources\Snake.bmp" />
+    <Image Include="Getting Started\Head.bmp" />
+    <Image Include="Getting Started\Snake.bmp" />
   </ItemGroup>
 </Project>
