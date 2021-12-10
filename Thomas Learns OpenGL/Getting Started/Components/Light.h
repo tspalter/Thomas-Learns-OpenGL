@@ -22,7 +22,7 @@ class Light {
 	// struct for point light
 	struct PointLight {
 		bool status;
-		glm::vec3 direction;
+		glm::vec3 position;
 		float constant;
 		float linear;
 		float quadratic;

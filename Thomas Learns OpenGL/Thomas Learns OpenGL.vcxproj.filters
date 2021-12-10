@@ -16,11 +16,6 @@
     <ClCompile Include="Getting Started\Components\Shader.cpp" />
     <ClCompile Include="Getting Started\HelloWindow.cpp" />
     <ClCompile Include="Getting Started\Components\Mesh.cpp" />
-    <ClCompile Include="Getting Started\Components\Model.cpp" />
-    <ClCompile Include="Getting Started\Components\Bone.cpp" />
-    <ClCompile Include="Getting Started\Components\Animation.cpp" />
-    <ClCompile Include="Getting Started\Components\Animator.cpp" />
-    <ClCompile Include="Getting Started\Components\Pathfinding.cpp" />
     <ClCompile Include="Getting Started\Components\MathFuncs.cpp" />
     <ClCompile Include="Getting Started\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="Getting Started\imgui\imgui_impl_opengl3.cpp" />
@@ -31,12 +26,13 @@
     <ClCompile Include="Getting Started\Components\Light.cpp" />
     <ClCompile Include="Getting Started\Components\Object.cpp" />
     <ClCompile Include="Getting Started\Components\IKBoneAnimation.cpp" />
+    <ClCompile Include="Getting Started\Components\Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Getting Started\shader.frag">
+    <None Include="Getting Started\Components\shader\shader.frag">
       <Filter>GettingStarted\HelloWindow</Filter>
     </None>
-    <None Include="Getting Started\shader.vert">
+    <None Include="Getting Started\Components\shader\shader.vert">
       <Filter>GettingStarted\HelloWindow</Filter>
     </None>
     <None Include="Getting Started\lighting.vert" />
@@ -55,16 +51,9 @@
     <ClInclude Include="..\stb-master\stb_image.h" />
     <ClInclude Include="Getting Started\Components\Camera.h" />
     <ClInclude Include="Getting Started\Components\Mesh.h" />
-    <ClInclude Include="Getting Started\Components\Model.h" />
-    <ClInclude Include="Getting Started\Components\AssimpGLMHelpers.h" />
-    <ClInclude Include="Getting Started\Components\AnimData.h" />
-    <ClInclude Include="Getting Started\Components\Bone.h" />
-    <ClInclude Include="Getting Started\Components\Animation.h" />
-    <ClInclude Include="Getting Started\Components\Animator.h" />
     <ClInclude Include="Getting Started\Components\FileSystem.h" />
     <ClInclude Include="Getting Started\Components\root_directory.h" />
     <ClInclude Include="Getting Started\Components\Quaternion.h" />
-    <ClInclude Include="Getting Started\Components\Pathfinding.h" />
     <ClInclude Include="Getting Started\Components\MathFuncs.h" />
     <ClInclude Include="Getting Started\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="Getting Started\imgui\imgui_impl_opengl3.h" />
@@ -77,6 +66,7 @@
     <ClInclude Include="Getting Started\Components\Light.h" />
     <ClInclude Include="Getting Started\Components\Object.h" />
     <ClInclude Include="Getting Started\Components\IKBoneAnimation.h" />
+    <ClInclude Include="Getting Started\Components\Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Getting Started\cube.vert" />
@@ -84,9 +74,5 @@
   <ItemGroup>
     <Image Include="Getting Started\Resources\container2.png" />
     <Image Include="Getting Started\Resources\container2_specular.png" />
-    <Image Include="Getting Started\Resources\Head.bmp" />
-    <Image Include="Getting Started\Resources\Snake.bmp" />
-    <Image Include="Getting Started\Head.bmp" />
-    <Image Include="Getting Started\Snake.bmp" />
   </ItemGroup>
 </Project>

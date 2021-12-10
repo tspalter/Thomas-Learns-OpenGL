@@ -18,7 +18,7 @@ void Light::InitLight() {
 
 	// set point light values
 	pLight.status = true;
-	pLight.direction = glm::vec3(1.2f, 1.0f, 2.0f);
+	pLight.position = glm::vec3(1.2f, 1.0f, 2.0f);
 	pLight.ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 	pLight.diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	pLight.specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);

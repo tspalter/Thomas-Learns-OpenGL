@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;..\Thomas Learns OpenGL\imgui-1.74;..\Thomas Learns OpenGL\Eigen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui-master\include;..\Thomas Learns OpenGL\Eigen;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;..\Thomas Learns OpenGL\imgui-1.74;..\Thomas Learns OpenGL\Eigen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui-master\include;..\Thomas Learns OpenGL\Eigen;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;..\Thomas Learns OpenGL\imgui-1.74;..\Thomas Learns OpenGL\Eigen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui-master\include;..\Thomas Learns OpenGL\Eigen;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;..\Thomas Learns OpenGL\imgui-1.74;..\Thomas Learns OpenGL\Eigen</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Thomas Learns OpenGL\Third Party Libraries\Include;..\Thomas Learns OpenGL\stb-master;..\Thomas Learns OpenGL\glm;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui-master\include;..\Thomas Learns OpenGL\Eigen;C:\Users\tcs11\Documents\Thomas Learns OpenGL\nanogui\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,16 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Getting Started\Components\Animation.cpp" />
-    <ClCompile Include="Getting Started\Components\Animator.cpp" />
-    <ClCompile Include="Getting Started\Components\Bone.cpp" />
+    <ClCompile Include="Getting Started\Components\Engine.cpp" />
     <ClCompile Include="Getting Started\Components\IKBoneAnimation.cpp" />
     <ClCompile Include="Getting Started\Components\Light.cpp" />
     <ClCompile Include="Getting Started\Components\MathFuncs.cpp" />
     <ClCompile Include="Getting Started\Components\Mesh.cpp" />
-    <ClCompile Include="Getting Started\Components\Model.cpp" />
     <ClCompile Include="Getting Started\Components\Object.cpp" />
-    <ClCompile Include="Getting Started\Components\Pathfinding.cpp" />
     <ClCompile Include="Getting Started\Components\Shader.cpp" />
     <ClCompile Include="Getting Started\HelloWindow.cpp" />
     <ClCompile Include="Getting Started\imgui\imgui.cpp" />
@@ -182,25 +178,19 @@
     <None Include="Getting Started\model.frag" />
     <None Include="Getting Started\model.vert" />
     <None Include="Getting Started\Resources\dancing-stormtrooper\silly_dancing.fbx" />
-    <None Include="Getting Started\shader.frag" />
-    <None Include="Getting Started\shader.vert" />
+    <None Include="Getting Started\Components\shader\shader.frag" />
+    <None Include="Getting Started\Components\shader\shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb-master\stb_image.h" />
-    <ClInclude Include="Getting Started\Components\Animation.h" />
-    <ClInclude Include="Getting Started\Components\Animator.h" />
-    <ClInclude Include="Getting Started\Components\AnimData.h" />
-    <ClInclude Include="Getting Started\Components\AssimpGLMHelpers.h" />
-    <ClInclude Include="Getting Started\Components\Bone.h" />
     <ClInclude Include="Getting Started\Components\Camera.h" />
+    <ClInclude Include="Getting Started\Components\Engine.h" />
     <ClInclude Include="Getting Started\Components\FileSystem.h" />
     <ClInclude Include="Getting Started\Components\IKBoneAnimation.h" />
     <ClInclude Include="Getting Started\Components\Light.h" />
     <ClInclude Include="Getting Started\Components\MathFuncs.h" />
     <ClInclude Include="Getting Started\Components\Mesh.h" />
-    <ClInclude Include="Getting Started\Components\Model.h" />
     <ClInclude Include="Getting Started\Components\Object.h" />
-    <ClInclude Include="Getting Started\Components\Pathfinding.h" />
     <ClInclude Include="Getting Started\Components\Quaternion.h" />
     <ClInclude Include="Getting Started\Components\root_directory.h" />
     <ClInclude Include="Getting Started\Components\Shader.h" />
@@ -217,12 +207,8 @@
     <Text Include="Getting Started\cube.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Getting Started\Head.bmp" />
     <Image Include="Getting Started\Resources\container2.png" />
     <Image Include="Getting Started\Resources\container2_specular.png" />
-    <Image Include="Getting Started\Resources\Head.bmp" />
-    <Image Include="Getting Started\Resources\Snake.bmp" />
-    <Image Include="Getting Started\Snake.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,9 +15,9 @@ void IKBoneAnimation::Init() {
 	// scale
 	scaleVector = {
 		{ 1.0f, 1.0f, 1.0f }, // root
-		{ 0.5f, 3.0f, 0.5f }, // yellow bone
+		{ 0.5f, 4.0f, 0.5f }, // yellow bone
 		{ 0.5f, 3.0f, 0.5f }, // purple bone
-		{ 0.5f, 3.0f, 0.5f }  // blue bone
+		{ 0.5f, 2.0f, 0.5f }  // blue bone
 	};
 	// rotation degree
 	rotDegreeVector = {
