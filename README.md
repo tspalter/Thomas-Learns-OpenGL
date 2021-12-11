@@ -1,30 +1,36 @@
-CS560 - Project 2
+CS560 - Project 3
 
-Controls:
+To Compile:  Run the .sln file in VS 2019
 
-The Camera locks the mouse into the center of the screen.  Move the mouse to change the viewpoint of the camera.
-Scroll wheel = Zooms in/out from the camera's position
-W = forward from the direction that the camera is facing
-S = backwards from the camera direction
-A = left
-D = right
-B = toggle bone debug drawing
-M = toggle mesh polygon line debug drawing
-P = toggle path debug drawing
-Left Arrow = Increase speed of the model
-Right Arrow = Decrease speed of the model (default set to slowest speed)
+CONTROLS
+=================
+Camera:
+W = Forward
+S = Backwards
+A = Left
+D = Right
+Left Shift = Down
+Space = Up
 
-Esc = Close the window
+Target Position (Green Cube) Controls:
+I = Up
+K = Down
+J = Left
+L = Right
+U = Forwards
+O = Backwards
 
-For this implementation, I ended up using the approximation by forward
-differencing.  I found that while there are several issues with the way the
-approximation works, it provided a satisfying pathfinding algorithm.  To 
-implement this, I created a separate file for all Pathfinding equations.
-Included are a binary search that finds the index of a section of the arc, 
-a calculation to properly determine the location of spline points based on the
-provided control points, and a calculation of the arc lengths for each given
-section of the path based on those spline points.  In the main method, I was
-able to iterate through different speeds and easing on the animations based 
-on the location on the path (the character animation is slower where arc lengths
-are shorter and faster on longer stretches).
+Simulation:
+Enter = Run the Simulation
 
+
+
+Algorithms/Important Files
+
+This program implements inverse kinematics through a Jacobian transpose matrix.  You will find the logic for writing this code in the IKBoneAnimation.cpp file, in the
+SetJacobian, GetTranspose, InverseKinematics, and finally ComputeAngles functions.  These functions set up the Jacobian matrix, get the transpose of it, implement the necessary
+transformations to each bone individually, and finally compile and update the links in the chain to allow the end effector to reach for the target object.
+
+
+Note:  I tried to get this system to work with 5 links in the chain, but I only managed to get 3 working and ran out of time trying to fix the bugs.  Regardless, thank you so
+much for being available and helping me, and I'm proud of myself for getting this to work as intended!
