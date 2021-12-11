@@ -197,6 +197,41 @@ void Engine::OnCameraMove() {
         mCamera->ProcessKeyboard(UP, deltaTime);
     if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         mCamera->ProcessKeyboard(DOWN, deltaTime);
+	// target position controls in case of UI failure
+	if (glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_PRESS) {
+		mBoneAnim->target.y += 0.1f;
+		if (mBoneAnim->target.y > 10.0f)
+			mBoneAnim->target.y = 10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_K) == GLFW_PRESS) {
+		mBoneAnim->target.y -= 0.1f;
+		if (mBoneAnim->target.y < -10.0f)
+			mBoneAnim->target.y = -10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_J) == GLFW_PRESS) {
+		mBoneAnim->target.x -= 0.1f;
+		if (mBoneAnim->target.x < -10.0f)
+			mBoneAnim->target.x = -10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_L) == GLFW_PRESS) {
+		mBoneAnim->target.x += 0.1f;
+		if (mBoneAnim->target.x > 10.0f)
+			mBoneAnim->target.x = 10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_PRESS) {
+		mBoneAnim->target.z -= 0.1f;
+		if (mBoneAnim->target.z < -10.0f)
+			mBoneAnim->target.z = -10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS) {
+		mBoneAnim->target.z += 0.1f;
+		if (mBoneAnim->target.z > 10.0f)
+			mBoneAnim->target.z = 10.0f;
+	}
+	if (glfwGetKey(mWindow, GLFW_KEY_ENTER) == GLFW_PRESS) {
+		mBoneAnim->didBoneMove = true;
+	}
+
     if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         mousePressed = true;
     }

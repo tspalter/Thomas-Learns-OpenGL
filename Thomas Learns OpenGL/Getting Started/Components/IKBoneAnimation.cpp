@@ -63,7 +63,7 @@ void IKBoneAnimation::ComputeAngles() {
 		SetJacobian(0);
 
 		// set up the angles vector
-		anglesVector = GetTranspose(0) * goalVector;
+		anglesVector = GetTranspose(0) * goalVector; // apply the Jacobian transpose
 		anglesVector = anglesVector * alpha;
 
 		// update the angle values from the new anglesVector
