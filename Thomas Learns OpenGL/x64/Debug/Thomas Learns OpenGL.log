@@ -1,7 +1,1 @@
-﻿  Engine.cpp
-C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\Getting Started\Components\Engine.cpp(180,21): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\Getting Started\Components\Engine.cpp(258,68): warning C4267:  'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\Getting Started\Components\Engine.cpp(266,68): warning C4267:  'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\Getting Started\Components\Engine.cpp(270,68): warning C4267:  'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\Getting Started\Components\Engine.cpp(277,68): warning C4267:  'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Thomas Learns OpenGL.vcxproj -> C:\Users\t.spalter\Documents\GitHub\Thomas-Learns-OpenGL\Thomas Learns OpenGL\x64\Debug\Thomas Learns OpenGL.exe
+﻿  Thomas Learns OpenGL.vcxproj -> C:\Users\tcs11\Documents\Thomas Learns OpenGL\Thomas Learns OpenGL\x64\Debug\Thomas Learns OpenGL.exe
